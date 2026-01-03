@@ -41,7 +41,18 @@
                 Health = 0;
             }
         }
-        public void GainEnergy(int amount) { }
+        public bool IsFainted()
+        {
+            if(Health == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public void ShowStatus()
+        {
+            Console.WriteLine(IsFainted() ? $"{Name} has fainted!" : $"{Name} has [{Health}/{MaxHealth}] HP and [{CurrentEnergy}] energy.");
+        }
         public void UseMove(int moveIndex, Pokemon targetPokemon) {
             var move = Moves[moveIndex];
             if(CurrentEnergy < move.EnergyCost)
@@ -97,6 +108,8 @@
     {
         public static void Main(string[] args)
         {
+            Random rnd = new Random();
+            int randomIndex = rnd.Next(0, 3);
             //Pikachu: Thundershock,Thunderbolt,Quick Attack hp70
             //Charmander: Ember,Flamethrower,Scratch    hp80
             //Squirtle: Water Gun,Hydro Pump,Tackle     hp70
@@ -110,12 +123,28 @@
                 new Move("Water Gun", 15, ElementType.Water, 10, 5),
                 new Move("Hydro Pump", 30, ElementType.Water, 35, 0)
                 );
-            charmander.UseMove(0, squirtle);
-            squirtle.UseMove(1, charmander);
-            charmander.UseMove(1, squirtle);
-            squirtle.UseMove(0, charmander);
-            charmander.UseMove(1, squirtle);
-            squirtle.UseMove(1, charmander);
+            while(!charmander.IsFainted() && !squirtle.IsFainted())
+            {
+                charmander.ShowStatus();
+                squirtle.ShowStatus();
+                Console.WriteLine($"{charmander.Name}, choose a move:");
+                Console.WriteLine($"0:Scratch(Damage {charmander.Moves[0].Damage})\n1:Ember(Damage {charmander.Moves[1].Damage})\n2:Flamethrower(Damage {charmander.Moves[2].Damage})");
+                Console.WriteLine("Choice: ");
+                int choice = int.Parse(Console.ReadLine());
+                charmander.UseMove(choice, squirtle);
+                if(squirtle.IsFainted())
+                {
+                    Console.WriteLine($"{squirtle.Name} has fainted! {charmander.Name} wins!");
+                    break;
+                }
+                squirtle.UseMove(randomIndex, charmander);
+                if(charmander.IsFainted())
+                {
+                    Console.WriteLine($"{charmander.Name} has fainted! {squirtle.Name} wins!");
+                    break;
+                }
+
+            }
 
         }
     }
