@@ -34,17 +34,30 @@
         public int CurrentEnergy { get; private set; }
         public List<Move> Moves = new List<Move>();
 
-        public void TakeDamage(int amount) {
-        Health = Health - amount;
-            if(Health < 0)
+        public void TakeDamage(int amount)
+        {
+            Health = Health - amount;
+            if (Health < 0)
             {
                 Health = 0;
             }
         }
-        public void GainEnergy(int amount) { }
-        public void UseMove(int moveIndex, Pokemon targetPokemon) {
+        public bool IsFainted()
+        {
+            if (Health == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public void ShowStatus()
+        {
+            Console.WriteLine(IsFainted() ? $"{Name} has fainted!" : $"{Name} has [{Health}/{MaxHealth}] HP and [{CurrentEnergy}] energy.");
+        }
+        public void UseMove(int moveIndex, Pokemon targetPokemon)
+        {
             var move = Moves[moveIndex];
-            if(CurrentEnergy < move.EnergyCost)
+            if (CurrentEnergy < move.EnergyCost)
             {
                 Console.WriteLine($"{Name} does not have enough energy to use {move.Name}!");
                 return;
@@ -62,7 +75,7 @@
 
 
         }
-        public Pokemon(string name, int maxhealth, ElementType type,Move normalmove,Move specialmove1,Move specialmove2)
+        public Pokemon(string name, int maxhealth, ElementType type, Move normalmove, Move specialmove1, Move specialmove2)
         {
             Name = name;
             Health = maxhealth;
@@ -97,6 +110,7 @@
     {
         public static void Main(string[] args)
         {
+            Random rnd = new Random();
             //Pikachu: Thundershock,Thunderbolt,Quick Attack hp70
             //Charmander: Ember,Flamethrower,Scratch    hp80
             //Squirtle: Water Gun,Hydro Pump,Tackle     hp70
@@ -110,14 +124,39 @@
                 new Move("Water Gun", 15, ElementType.Water, 10, 5),
                 new Move("Hydro Pump", 30, ElementType.Water, 35, 0)
                 );
-            charmander.UseMove(0, squirtle);
-            squirtle.UseMove(1, charmander);
-            charmander.UseMove(1, squirtle);
-            squirtle.UseMove(0, charmander);
-            charmander.UseMove(1, squirtle);
-            squirtle.UseMove(1, charmander);
+            while (!charmander.IsFainted() && !squirtle.IsFainted())
+            {
+                int randomIndex = rnd.Next(0, 3);
+                charmander.ShowStatus();
+                squirtle.ShowStatus();
+                Console.WriteLine($"{charmander.Name}, choose a move:");
+                for(int i = 0; i < charmander.Moves.Count; i++)
+                {
+                    var move = charmander.Moves[i];
+                    Console.WriteLine($"{i}: {move.Name} (Damage: {move.Damage}, Type: {move.Type}, Energy Cost: {move.EnergyCost}, Energy Gain: {move.EnergyGain})");
+                }
+                Console.Write("Choice: ");
+                int choice = int.Parse(Console.ReadLine());
+                charmander.UseMove(choice, squirtle);
+                if (squirtle.IsFainted())
+                {
+                    Console.WriteLine($"{squirtle.Name} has fainted! {charmander.Name} wins!");
+                    break;
+                }
+                squirtle.UseMove(randomIndex, charmander);
+                if (charmander.IsFainted())
+                {
+                    Console.WriteLine($"{charmander.Name} has fainted! {squirtle.Name} wins!");
+                    break;
+                }
+                Console.WriteLine("Press a key to continue...");
+                Console.ReadKey();
+                Console.Clear();
+
+            }
 
         }
     }
 }
-    
+
+
