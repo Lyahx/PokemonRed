@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36811.4 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCTA", "GCTA\GCTA.csproj", "{48547561-8D4A-4CE1-9A60-9FB299F8B829}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48547561-8D4A-4CE1-9A60-9FB299F8B829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48547561-8D4A-4CE1-9A60-9FB299F8B829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48547561-8D4A-4CE1-9A60-9FB299F8B829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48547561-8D4A-4CE1-9A60-9FB299F8B829}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF54F555-083F-47F4-BD2E-819AE49EB22E}
+	EndGlobalSection
+EndGlobal
